@@ -26,12 +26,14 @@ public function fields(Request $request)
             ->options(\App\Company::all()),
         NovaBelongsToDepend::make('Department')
             ->optionsResolve(function ($company) {
-                return $company->departments;
+                // Reduce the amount of unnecessary data sent
+                return $company->departments()->get(['id','name']);
             })
             ->dependsOn('Company'),
         NovaBelongsToDepend::make('Location')
             ->optionsResolve(function ($company) {
-                return $company->locations;
+                / Reduce the amount of unnecessary data sent
+                return $company->locations()->get(['id','name']);
             })
             ->dependsOn('Company'),
 
@@ -39,11 +41,13 @@ public function fields(Request $request)
 }
 ```
 
-## Usage
+## Sample
 
-- Warehouse hasMany Articles
-- Articles belongsToMany Suppliers
-- Suppliers belongsToMany Articles 
+[Demo Project](https://github.com/orlyapps/laravel-nova-demo)
+
+-   Warehouse hasMany Articles
+-   Articles belongsToMany Suppliers
+-   Suppliers belongsToMany Articles
 
 1. Select a **Warehouse** and get all articles of the warehouse
 2. Select a **Article** and get all suppliers who has this article
