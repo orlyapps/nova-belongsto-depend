@@ -32,7 +32,7 @@ public function fields(Request $request)
             ->dependsOn('Company'),
         NovaBelongsToDepend::make('Location')
             ->optionsResolve(function ($company) {
-                / Reduce the amount of unnecessary data sent
+                // Reduce the amount of unnecessary data sent
                 return $company->locations()->get(['id','name']);
             })
             ->dependsOn('Company'),
