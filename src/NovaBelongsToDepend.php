@@ -44,7 +44,7 @@ class NovaBelongsToDepend extends BelongsTo
 
         $this->modelClass = get_class($resource::newModel());
         $this->modelPrimaryKey = $resource::newModel()->getKeyName();
-        $this->titleKey = Nova::resourceForKey(str_plural($this->attribute))::$title;
+        $this->titleKey = $resource::$title;
         $this->optionResolveCallback = function () {
             return [];
         };
@@ -71,7 +71,6 @@ class NovaBelongsToDepend extends BelongsTo
     public function resolve($resource, $attribute = null)
     {
         parent::resolve($resource, $attribute);
-
         $this->resourceParentClass = get_class(Nova::newResourceFromModel($resource));
 
         $foreign = $resource->{$this->attribute}();
