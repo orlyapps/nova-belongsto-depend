@@ -53,11 +53,11 @@ export default {
                         resourceClass: this.field.resourceParentClass,
                         modelClass: dependsOnValue.field.modelClass,
                         attribute: this.field.attribute,
-                        dependKey: dependsOnValue.value.id
+                        dependKey: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey]
                     })).data;
 
                     if (this.field.valueKey) {
-                        this.value = this.options.find(item => item[this.field.modelKeyName] == this.field.valueKey);
+                        this.value = this.options.find(item => item[this.field.foreignKeyName] == this.field.valueKey);
                         Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
                             value: this.value,
                             field: this.field
@@ -78,7 +78,7 @@ export default {
         setInitialValue() {
             this.options = this.field.options;
             if (this.field.value) {
-                this.value = this.options.find(item => item[this.field.modelKeyName] == this.field.valueKey);
+                this.value = this.options.find(item => item[this.field.foreignKeyName] == this.field.valueKey);
 
                 if (this.value) {
                     Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
@@ -94,7 +94,7 @@ export default {
          */
         fill(formData) {
             if (this.value) {
-                formData.append(this.field.attribute, this.value.id || "");
+                formData.append(this.field.attribute, this.value[this.field.modelPrimaryKey] || "");
             }
         },
 
