@@ -973,7 +973,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                                     if (_this.field.valueKey) {
                                         _this.value = _this.options.find(function (item) {
-                                            return item[_this.field.foreignKeyName] == _this.field.valueKey;
+                                            return item[_this.field.modelPrimaryKey] == _this.field.valueKey;
                                         });
                                         Nova.$emit("nova-belongsto-depend-" + _this.field.attribute, {
                                             value: _this.value,
@@ -1011,7 +1011,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             this.options = this.field.options;
             if (this.field.value) {
                 this.value = this.options.find(function (item) {
-                    return item[_this2.field.foreignKeyName] == _this2.field.valueKey;
+                    return item[_this2.field.modelPrimaryKey] == _this2.field.valueKey;
                 });
 
                 if (this.value) {

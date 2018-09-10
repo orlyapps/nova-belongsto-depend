@@ -57,7 +57,7 @@ export default {
                     })).data;
 
                     if (this.field.valueKey) {
-                        this.value = this.options.find(item => item[this.field.foreignKeyName] == this.field.valueKey);
+                        this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.field.valueKey);
                         Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
                             value: this.value,
                             field: this.field
@@ -78,7 +78,7 @@ export default {
         setInitialValue() {
             this.options = this.field.options;
             if (this.field.value) {
-                this.value = this.options.find(item => item[this.field.foreignKeyName] == this.field.valueKey);
+                this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.field.valueKey);
 
                 if (this.value) {
                     Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
