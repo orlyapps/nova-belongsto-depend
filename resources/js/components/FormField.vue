@@ -116,3 +116,28 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style>
+.multiselect {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    min-height: 36px !important;
+    border-radius: 0.5rem;
+}
+
+.multiselect__tags {
+    min-height: 36px !important;
+    border: 1px solid var(--60) !important;
+    color: var(--80);
+    border-radius: 0.5rem !important;
+}
+
+.multiselect__select {
+    background-repeat: no-repeat;
+    background-size: 10px 6px;
+    background-position: center right 0.75rem;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="#35393C" fill-rule="nonzero" d="M8.293.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 1.707.293L5 3.586 8.293.293z"/></svg>');
+}
+
+.multiselect__select:before {
+    content: none !important;
+}
+</style>
