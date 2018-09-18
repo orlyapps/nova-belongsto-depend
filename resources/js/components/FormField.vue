@@ -37,8 +37,6 @@ export default {
         };
     },
     created() {
-        console.log(this.field);
-
         if (this.field.dependsOn) {
             Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, async dependsOnValue => {
                 this.value = "";
@@ -106,7 +104,7 @@ export default {
         },
 
         async onChange(value) {
-            Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
+            Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
                 value,
                 field: this.field
             });

@@ -941,8 +941,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     created: function created() {
         var _this = this;
 
-        console.log(this.field);
-
         if (this.field.dependsOn) {
             Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, function () {
                 var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(dependsOnValue) {
@@ -1049,7 +1047,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
-                                Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
+                                Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
                                     value: value,
                                     field: this.field
                                 });
