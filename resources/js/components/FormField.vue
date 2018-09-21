@@ -41,7 +41,7 @@ export default {
             Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, async dependsOnValue => {
                 this.value = "";
 
-                Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
+                Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
                     value: this.value,
                     field: this.field
                 });
@@ -56,7 +56,7 @@ export default {
 
                     if (this.field.valueKey) {
                         this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.field.valueKey);
-                        Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
+                        Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
                             value: this.value,
                             field: this.field
                         });
@@ -77,9 +77,8 @@ export default {
             this.options = this.field.options;
             if (this.field.value) {
                 this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.field.valueKey);
-
                 if (this.value) {
-                    Nova.$emit("nova-belongsto-depend-" + this.field.attribute, {
+                    Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
                         value: this.value,
                         field: this.field
                     });
