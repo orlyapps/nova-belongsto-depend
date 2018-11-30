@@ -21,7 +21,7 @@ class FieldController extends Controller
 
         // Create Nested Array Fields from Panels, Flatten and find
         $fields = collect($resource->fields($request))->map(function ($field) {
-            if ($field instanceof Panel) {
+            if ($field instanceof Panel || \get_class($field) === 'Arsenaltech\NovaTab\NovaTab') {
                 return collect($field->data);
             }
             return $field;
