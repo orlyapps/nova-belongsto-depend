@@ -29,13 +29,37 @@ export default {
     components: { Multiselect },
     mixins: [FormField, HandlesValidationErrors],
 
-    props: ["resourceName", "resourceId", "field"],
+    props: {
+        resourceName: String,
+        field: Object,
+        resourceId: {},
+        viaResource: {},
+        viaResourceId: {},
+        viaRelationship: {},
+    },
 
     data() {
         return {
             options: []
         };
     },
+
+    computed: {
+        /** Determine if we are editing an existing resource */
+        editingExistingResource() {
+            return Boolean(this.field.belongsToId)
+        },
+
+        /** Determine if we are creating a new resource via a parent relation */
+        creatingViaRelatedResource() {
+            return (
+                this.viaResource == this.field.resourceName &&
+                this.viaRelationship === this.field.reverseRelation &&
+                this.viaResourceId
+            )
+        },
+    },
+
     created() {
         if (this.field.dependsOn) {
             Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, async dependsOnValue => {
@@ -70,6 +94,7 @@ export default {
         customLabel(item) {
             return item[this.field.titleKey];
         },
+
         /*
          * Set the initial, internal value for the field.
          */
@@ -77,12 +102,15 @@ export default {
             this.options = this.field.options;
             if (this.field.value) {
                 this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.field.valueKey);
-                if (this.value) {
-                    Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
-                        value: this.value,
-                        field: this.field
-                    });
-                }
+            } else if (this.creatingViaRelatedResource) {
+                this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.viaResourceId);
+            }
+
+            if (this.value) {
+                Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
+                    value: this.value,
+                    field: this.field
+                });
             }
         },
 
