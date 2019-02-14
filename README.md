@@ -35,6 +35,11 @@ public function fields(Request $request)
                 // Reduce the amount of unnecessary data sent
                 return $company->locations()->get(['id','name']);
             })
+            ->fallback(
+                Text::make('Location Name')->rules('required', 'max:255'),
+            )
+            ->hideLinkToResourceFromDetail()
+            ->nullable()
             ->dependsOn('Company'),
 
     ];
