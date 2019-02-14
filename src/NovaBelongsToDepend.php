@@ -132,7 +132,7 @@ class NovaBelongsToDepend extends BelongsTo
         parent::resolveForDisplay($resource, $attribute);
 
         if ($resource->{$this->foreignKeyName} === null && $this->fallback) {
-            $this->value = $resource->{$this->fallback->attribute} . 'sdd';
+            $this->value = $resource->{$this->fallback->attribute};
             return;
         }
 
