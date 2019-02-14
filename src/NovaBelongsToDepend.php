@@ -33,6 +33,7 @@ class NovaBelongsToDepend extends BelongsTo
     public $fallback;
 
     public $showLinkToResourceFromDetail = true;
+    public $showLinkToResourceFromIndex = true;
 
     /**
      * The field's component.
@@ -81,6 +82,12 @@ class NovaBelongsToDepend extends BelongsTo
     public function hideLinkToResourceFromDetail()
     {
         $this->showLinkToResourceFromDetail = false;
+        return $this;
+    }
+
+    public function hideLinkToResourceFromIndex()
+    {
+        $this->showLinkToResourceFromIndex = false;
         return $this;
     }
 
@@ -165,7 +172,8 @@ class NovaBelongsToDepend extends BelongsTo
             'modelPrimaryKey' => $this->modelPrimaryKey,
             'foreignKeyName' => $this->foreignKeyName,
             'fallback' => $this->fallback,
-            'showLinkToResourceFromDetail' => $this->showLinkToResourceFromDetail
+            'showLinkToResourceFromDetail' => $this->showLinkToResourceFromDetail,
+            'showLinkToResourceFromIndex' => $this->showLinkToResourceFromIndex
         ], $this->meta);
     }
 }

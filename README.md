@@ -39,6 +39,7 @@ public function fields(Request $request)
                 Text::make('Location Name')->rules('required', 'max:255'),
             )
             ->hideLinkToResourceFromDetail()
+            ->hideLinkToResourceFromIndex()
             ->nullable()
             ->dependsOn('Company'),
 
