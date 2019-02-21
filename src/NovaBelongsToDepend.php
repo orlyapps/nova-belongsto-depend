@@ -30,6 +30,11 @@ class NovaBelongsToDepend extends BelongsTo
     public $optionResolveCallback = null;
     public $options = [];
 
+    public $fallback;
+
+    public $showLinkToResourceFromDetail = true;
+    public $showLinkToResourceFromIndex = true;
+
     /**
      * The field's component.
      *
@@ -68,6 +73,24 @@ class NovaBelongsToDepend extends BelongsTo
         return $this;
     }
 
+    public function fallback($fallback)
+    {
+        $this->fallback = $fallback;
+        return $this;
+    }
+
+    public function hideLinkToResourceFromDetail()
+    {
+        $this->showLinkToResourceFromDetail = false;
+        return $this;
+    }
+
+    public function hideLinkToResourceFromIndex()
+    {
+        $this->showLinkToResourceFromIndex = false;
+        return $this;
+    }
+
     public function resolve($resource, $attribute = null)
     {
         parent::resolve($resource, $attribute);
@@ -85,6 +108,54 @@ class NovaBelongsToDepend extends BelongsTo
             $this->valueKey = $value->getKey();
             $this->value = $this->formatDisplayValue($value);
         }
+
+        if ($this->fallback) {
+            $this->fallback->resolve($resource);
+        }
+    }
+
+    public function getRules(NovaRequest $request)
+    {
+        if ($request->get($this->attribute) === null && $this->fallback) {
+            return $this->fallback->getRules($request);
+        }
+
+        return parent::getRules($request);
+    }
+
+    /**
+     * @param mixed $resource
+     * @param null $attribute
+     */
+    public function resolveForDisplay($resource, $attribute = null)
+    {
+        parent::resolveForDisplay($resource, $attribute);
+
+        if ($resource->{$this->foreignKeyName} === null && $this->fallback) {
+            $this->value = $resource->{$this->fallback->attribute};
+            return;
+        }
+
+        $this->fallback = false;
+    }
+
+    /**
+     * Fills the attributes of the model within the container if the dependencies for the container are satisfied.
+     *
+     * @param NovaRequest $request
+     * @param string $requestAttribute
+     * @param object $model
+     * @param string $attribute
+     */
+    protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
+    {
+        if ($request->exists($requestAttribute)) {
+            $model->{$attribute} = $request[$requestAttribute];
+        }
+
+        if ($this->fallback) {
+            $this->fallback->fill($request, $model);
+        }
     }
 
     public function meta()
@@ -100,6 +171,9 @@ class NovaBelongsToDepend extends BelongsTo
             'modelClass' => $this->modelClass,
             'modelPrimaryKey' => $this->modelPrimaryKey,
             'foreignKeyName' => $this->foreignKeyName,
+            'fallback' => $this->fallback,
+            'showLinkToResourceFromDetail' => $this->showLinkToResourceFromDetail,
+            'showLinkToResourceFromIndex' => $this->showLinkToResourceFromIndex
         ], $this->meta);
     }
 }

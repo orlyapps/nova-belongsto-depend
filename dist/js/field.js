@@ -572,9 +572,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["resourceName", "field"]
+    props: ["resourceName", "field"],
+
+    computed: {
+        showLink: function showLink() {
+            return this.field.value && !this.field.fallback && this.field.showLinkToResourceFromIndex;
+        }
+    }
 });
 
 /***/ }),
@@ -586,7 +594,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("span", [
-    _vm.field.value
+    _vm.showLink
       ? _c(
           "span",
           [
@@ -613,7 +621,7 @@ var render = function() {
           ],
           1
         )
-      : _c("span", [_vm._v("—")])
+      : _c("span", [_vm._v(_vm._s(_vm.field.value))])
   ])
 }
 var staticRenderFns = []
@@ -697,9 +705,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["resource", "resourceName", "resourceId", "field"]
+    props: ["resource", "resourceName", "resourceId", "field"],
+
+    computed: {
+        showLink: function showLink() {
+            return this.field.value && !this.field.fallback && this.field.showLinkToResourceFromDetail;
+        }
+    }
 });
 
 /***/ }),
@@ -718,7 +733,7 @@ var render = function() {
         "template",
         { slot: "value" },
         [
-          _vm.field.value
+          _vm.showLink
             ? _c(
                 "router-link",
                 {
@@ -739,6 +754,8 @@ var render = function() {
                   )
                 ]
               )
+            : _vm.field.value
+            ? _c("p", [_vm._v(_vm._s(_vm.field.value))])
             : _c("p", [_vm._v("—")])
         ],
         1
@@ -820,7 +837,7 @@ var content = __webpack_require__(13);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("30bbe8cf", content, false, {});
+var update = __webpack_require__(2)("73287042", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -893,7 +910,7 @@ var content = __webpack_require__(16);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("5590b347", content, false, {});
+var update = __webpack_require__(2)("3cab5654", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -917,7 +934,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.multiselect {\r\n    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\r\n            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\r\n    min-height: 36px !important;\r\n    border-radius: 0.5rem;\n}\n.multiselect__tags {\r\n    min-height: 36px !important;\r\n    border: 1px solid var(--60) !important;\r\n    color: var(--80);\r\n    border-radius: 0.5rem !important;\n}\n.multiselect__select {\r\n    background-repeat: no-repeat;\r\n    background-size: 10px 6px;\r\n    background-position: center right 0.75rem;\r\n    background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 6\"><path fill=\"#35393C\" fill-rule=\"nonzero\" d=\"M8.293.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 1.707.293L5 3.586 8.293.293z\"/></svg>');\n}\n.multiselect__select:before {\r\n    content: none !important;\n}\r\n", ""]);
+exports.push([module.i, "\n.multiselect {\n    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);\n    min-height: 36px !important;\n    border-radius: 0.5rem;\n}\n.multiselect__tags {\n    min-height: 36px !important;\n    border: 1px solid var(--60) !important;\n    color: var(--80);\n    border-radius: 0.5rem !important;\n}\n.multiselect__select {\n    background-repeat: no-repeat;\n    background-size: 10px 6px;\n    background-position: center right 0.75rem;\n    background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 6\"><path fill=\"#35393C\" fill-rule=\"nonzero\" d=\"M8.293.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 1.707.293L5 3.586 8.293.293z\"/></svg>');\n}\n.multiselect__select:before {\n    content: none !important;\n}\n", ""]);
 
 // exports
 
@@ -938,6 +955,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -995,6 +1023,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         /** Determine if we are creating a new resource via a parent relation */
         creatingViaRelatedResource: function creatingViaRelatedResource() {
             return this.viaResource == this.field.resourceName && this.viaRelationship === this.field.reverseRelation && this.viaResourceId;
+        },
+        showSelect: function showSelect() {
+            return !this.field.fallback || this.options.length !== 0;
+        },
+        showFallback: function showFallback() {
+            return this.field.fallback && this.options.length === 0;
         }
     },
 
@@ -1096,6 +1130,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
         fill: function fill(formData) {
             if (this.value) {
                 formData.append(this.field.attribute, this.value[this.field.modelPrimaryKey] || "");
+            } else if (this.field.fallback) {
+                formData.append(this.field.fallback.attribute, this.$refs['field-' + this.field.fallback.attribute].value);
             }
         },
 
@@ -12138,58 +12174,88 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "default-field",
-    { attrs: { field: _vm.field } },
+    "div",
     [
-      _c(
-        "template",
-        { slot: "field" },
-        [
-          _c(
-            "multiselect",
-            {
-              attrs: {
-                options: _vm.options,
-                placeholder: this.field.indexName + " " + _vm.__("Select"),
-                selectLabel: _vm.__("Press enter to select"),
-                selectedLabel: _vm.__("Selected"),
-                deselectLabel: _vm.__("Press enter to remove"),
-                "custom-label": _vm.customLabel
-              },
-              on: { input: _vm.onChange },
-              model: {
-                value: _vm.value,
-                callback: function($$v) {
-                  _vm.value = $$v
-                },
-                expression: "value"
-              }
-            },
+      _vm.showSelect
+        ? _c(
+            "default-field",
+            { attrs: { field: _vm.field } },
             [
-              _c("span", { attrs: { slot: "noResult" }, slot: "noResult" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(
-                      _vm.__(
-                        "Oops! No elements found. Consider changing the search query."
+              _c(
+                "template",
+                { slot: "field" },
+                [
+                  _c(
+                    "multiselect",
+                    {
+                      attrs: {
+                        options: _vm.options,
+                        placeholder:
+                          this.field.indexName + " " + _vm.__("Select"),
+                        selectLabel: _vm.__("Press enter to select"),
+                        selectedLabel: _vm.__("Selected"),
+                        deselectLabel: _vm.__("Press enter to remove"),
+                        "custom-label": _vm.customLabel
+                      },
+                      on: { input: _vm.onChange },
+                      model: {
+                        value: _vm.value,
+                        callback: function($$v) {
+                          _vm.value = $$v
+                        },
+                        expression: "value"
+                      }
+                    },
+                    [
+                      _c(
+                        "span",
+                        { attrs: { slot: "noResult" }, slot: "noResult" },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(
+                                _vm.__(
+                                  "Oops! No elements found. Consider changing the search query."
+                                )
+                              ) +
+                              "\n                "
+                          )
+                        ]
                       )
-                    ) +
-                    "\n            "
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _vm.hasError
-            ? _c("p", { staticClass: "my-2 text-danger" }, [
-                _vm._v("\n            " + _vm._s(_vm.firstError) + "\n        ")
-              ])
-            : _vm._e()
-        ],
-        1
-      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.hasError
+                    ? _c("p", { staticClass: "my-2 text-danger" }, [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.firstError) +
+                            "\n            "
+                        )
+                      ])
+                    : _vm._e()
+                ],
+                1
+              )
+            ],
+            2
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.showFallback
+        ? _c("form-" + _vm.field.fallback.component, {
+            ref: "field-" + _vm.field.fallback.attribute,
+            tag: "component",
+            attrs: {
+              errors: _vm.errors,
+              "resource-id": _vm.resourceId,
+              "resource-name": _vm.resourceName,
+              field: _vm.field.fallback
+            }
+          })
+        : _vm._e()
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
