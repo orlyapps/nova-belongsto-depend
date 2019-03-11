@@ -24,6 +24,9 @@ composer require orlyapps/nova-belongsto-depend
 Use this field in your Nova Resource
 
 ```php
+
+use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
+
 public function fields(Request $request)
 {
     return [
