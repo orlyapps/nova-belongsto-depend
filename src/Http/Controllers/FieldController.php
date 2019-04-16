@@ -24,6 +24,10 @@ class FieldController extends Controller
             }
             return $field;
         })->flatten();
+        
+        $fields = $fields->filter(function ($value) use ($request) {
+            return ($value instanceof NovaBelongsToDepend);
+        });
 
         $field = $fields->first(function ($value, $key) use ($request) {
             return ($value instanceof NovaBelongsToDepend && $value->attribute == $request->attribute);
