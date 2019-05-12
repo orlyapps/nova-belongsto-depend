@@ -16,7 +16,7 @@
             slot="noResult"
           >{{ __('Oops! No elements found. Consider changing the search query.')}}</span>
         </multiselect>
-        <p v-if="hasError" class="my-2 text-danger">{{ firstError }}</p>
+        <div v-if="hasError" class="help-text error-text mt-2 text-danger">{{ firstError }}</div>
       </template>
     </default-field>
     <component
