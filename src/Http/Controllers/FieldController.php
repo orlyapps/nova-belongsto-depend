@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
+use \Illuminate\Http\Resources\MergeValue;
 
 class FieldController extends Controller
 {
@@ -19,12 +20,12 @@ class FieldController extends Controller
 
         // Create Nested Array Fields from Panels, Flatten and find
         $fields = collect($resource->fields($request))->map(function ($field) {
-            if ($field instanceof Panel || \get_class($field) === 'Arsenaltech\NovaTab\NovaTab') {
+            if ($field instanceof MergeValue || $field instanceof Panel || \get_class($field) === 'Arsenaltech\NovaTab\NovaTab') {
                 return collect($field->data);
             }
             return $field;
         })->flatten();
-        
+
         $fields = $fields->filter(function ($value) use ($request) {
             return ($value instanceof NovaBelongsToDepend);
         });

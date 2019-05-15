@@ -1,34 +1,23 @@
 <template>
-  <div>
-    <default-field :field="field" v-if="showSelect">
-      <template slot="field">
-        <multiselect
-          v-model="value"
-          :options="options"
-          :placeholder="this.field.indexName + ' ' +__('Select')"
-          :selectLabel="__('Press enter to select')"
-          :selectedLabel="__('Selected')"
-          :deselectLabel="__('Press enter to remove')"
-          :custom-label="customLabel"
-          @input="onChange"
-        >
-          <span
-            slot="noResult"
-          >{{ __('Oops! No elements found. Consider changing the search query.')}}</span>
-        </multiselect>
-        <p v-if="hasError" class="my-2 text-danger">{{ firstError }}</p>
-      </template>
-    </default-field>
-    <component
-      v-if="showFallback"
-      :is="'form-' + field.fallback.component"
-      :errors="errors"
-      :resource-id="resourceId"
-      :resource-name="resourceName"
-      :field="field.fallback"
-      :ref="'field-' + field.fallback.attribute"
-    />
-  </div>
+  <default-field :field="field" v-if="showSelect">
+    <template slot="field">
+      <multiselect
+        v-model="value"
+        :options="options"
+        :placeholder="this.field.indexName + ' ' +__('Select')"
+        :selectLabel="__('Press enter to select')"
+        :selectedLabel="__('Selected')"
+        :deselectLabel="__('Press enter to remove')"
+        :custom-label="customLabel"
+        @input="onChange"
+      >
+        <span
+          slot="noResult"
+        >{{ __('Oops! No elements found. Consider changing the search query.')}}</span>
+      </multiselect>
+      <p v-if="hasError" class="my-2 text-danger">{{ firstError }}</p>
+    </template>
+  </default-field>
 </template>
 
 <script>
