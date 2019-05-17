@@ -68,9 +68,13 @@ export default {
   },
 
   created() {
+    const specialChars = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    const doCaller = this.field.attribute.replace(/\[[^\][]*\]$/, '['+ this.field.dependsOn +']');
+    const fixedCaller = specialChars.test(this.field.attribute) ? doCaller : this.field.dependsOn;
+      
     if (this.field.dependsOn) {
       Nova.$on(
-        "nova-belongsto-depend-" + this.field.dependsOn,
+        "nova-belongsto-depend-" + fixedCaller,
         async dependsOnValue => {
           this.value = "";
 
@@ -88,7 +92,7 @@ export default {
               {
                 resourceClass: this.field.resourceParentClass,
                 modelClass: dependsOnValue.field.modelClass,
-                attribute: this.field.attribute,
+                attribute: this.field.indexName.toLowerCase(),
                 dependKey:
                   dependsOnValue.value[dependsOnValue.field.modelPrimaryKey]
               }
