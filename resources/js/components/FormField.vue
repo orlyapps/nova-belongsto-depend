@@ -122,8 +122,7 @@ export default {
      */
     setInitialValue() {
       this.options = this.field.options;
-      console.log(this.options);
-
+      
       if (this.field.value) {
         this.value = this.options.find(
           item => item[this.field.modelPrimaryKey] == this.field.valueKey
