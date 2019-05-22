@@ -9,6 +9,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Rules\Relatable;
 
 class NovaBelongsToDepend extends BelongsTo
 {
@@ -114,14 +115,6 @@ class NovaBelongsToDepend extends BelongsTo
         }
     }
 
-    public function getRules(NovaRequest $request)
-    {
-        if ($request->get($this->attribute) === null && $this->fallback) {
-            return $this->fallback->getRules($request);
-        }
-
-        return parent::getRules($request);
-    }
 
     /**
      * @param mixed $resource
