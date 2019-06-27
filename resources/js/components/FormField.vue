@@ -16,7 +16,7 @@
             {{ __('Oops! No elements found. Consider changing the search query.')}}
         </span>
 
-        <span slot="noOptions">
+        <span slot="noOptions" >
             {{ __('List is empty')}}
         </span>
 

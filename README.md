@@ -34,17 +34,17 @@ public function fields(Request $request)
         Text::make('Name')->rules('required', 'max:255'),
 
         NovaBelongsToDepend::make('Company')
-            ->placeholder('Optional Placeholder')
+            ->placeholder('Optional Placeholder') // Add this just if you want to customize the placeholder
             ->options(\App\Company::all()),
         NovaBelongsToDepend::make('Department')
-            ->placeholder('Optional Placeholder')
+            ->placeholder('Optional Placeholder') // Add this just if you want to customize the placeholder
             ->optionsResolve(function ($company) {
                 // Reduce the amount of unnecessary data sent
                 return $company->departments()->get(['id','name']);
             })
             ->dependsOn('Company'),
         NovaBelongsToDepend::make('Location')
-            ->placeholder('Optional Placeholder')
+            ->placeholder('Optional Placeholder') // Add this just if you want to customize the placeholder
             ->optionsResolve(function ($company) {
                 // Reduce the amount of unnecessary data sent
                 return $company->locations()->get(['id','name']);
