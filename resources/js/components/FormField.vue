@@ -5,16 +5,21 @@
         v-model="value"
         :disabled="creatingViaRelatedResource"
         :options="options"
-        :placeholder="this.field.indexName + ' ' +__('Select')"
+        :placeholder="this.field.placeholder ? this.field.placeholder : (this.field.indexName + ' ' +__('Select'))"
         :selectLabel="__('Press enter to select')"
         :selectedLabel="__('Selected')"
         :deselectLabel="__('Press enter to remove')"
         :custom-label="customLabel"
         @input="onChange"
       >
-        <span
-          slot="noResult"
-        >{{ __('Oops! No elements found. Consider changing the search query.')}}</span>
+        <span slot="noResult" >
+            {{ __('Oops! No elements found. Consider changing the search query.')}}
+        </span>
+
+        <span slot="noOptions" >
+            {{ __('List is empty')}}
+        </span>
+
       </multiselect>
       <div v-if="hasError" class="help-text error-text mt-2 text-danger">{{ firstError }}</div>
     </template>
