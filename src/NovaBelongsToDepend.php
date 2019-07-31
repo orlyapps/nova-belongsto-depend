@@ -3,13 +3,11 @@
 namespace Orlyapps\NovaBelongsToDepend;
 
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Rules\Relatable;
 
 class NovaBelongsToDepend extends BelongsTo
 {
@@ -56,8 +54,15 @@ class NovaBelongsToDepend extends BelongsTo
         };
     }
 
-    public function placeholder(string $placeholder) {
+    public function placeholder(string $placeholder)
+    {
         $this->withMeta(['placeholder' => $placeholder]);
+        return $this;
+    }
+
+    public function openDirection(string $openDirection)
+    {
+        $this->withMeta(['openDirection' => $openDirection]);
         return $this;
     }
 
@@ -119,7 +124,6 @@ class NovaBelongsToDepend extends BelongsTo
             $this->fallback->resolve($resource);
         }
     }
-
 
     /**
      * @param mixed $resource

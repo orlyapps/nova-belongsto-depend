@@ -61,17 +61,23 @@ public function fields(Request $request)
 }
 ```
 
+## Options
+
+```placeholder('Optional Placeholder') ```
+
+```openDirection('top') ```
+See options values from [vue-multiselect ](https://vue-multiselect.js.org/#sub-props)
+
 ## Translation
 
-The following strings are translatable (add then in your language file located in resources/lan/vendor/nova/*.json).
-- 'Oops! No elements found. Consider changing the search query.'
-- 'List is empty'
-- 'Select'
-- 'Press enter to select'
-- 'Selected'
-- 'Press enter to remove'
+The following strings are translatable (add then in your language file located in resources/lan/vendor/nova/\*.json).
 
-
+-   'Oops! No elements found. Consider changing the search query.'
+-   'List is empty'
+-   'Select'
+-   'Press enter to select'
+-   'Selected'
+-   'Press enter to remove'
 
 ## Sample
 
