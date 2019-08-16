@@ -3,6 +3,7 @@
 namespace Orlyapps\NovaBelongsToDepend;
 
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
@@ -104,6 +105,16 @@ class NovaBelongsToDepend extends BelongsTo
 
     public function resolve($resource, $attribute = null)
     {
+        $testInstance = new \ReflectionClass($resource);
+        if ($testInstance->isAnonymous()) {
+            return $this;
+        }
+
+        if ($resource instanceof Action) {
+            $this->resourceParentClass = get_class($resource);
+            return $this;
+        }
+
         parent::resolve($resource, $attribute);
         $this->resourceParentClass = get_class(Nova::newResourceFromModel($resource));
 

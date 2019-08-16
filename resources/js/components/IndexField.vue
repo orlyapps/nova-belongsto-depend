@@ -10,11 +10,9 @@
                     }
                 }"
                 class="no-underline dim text-primary font-bold"
-            >
-                {{ field.value }}
-            </router-link>
+            >{{ field.value }}</router-link>
         </span>
-        <span v-else>{{ field.value }}</span>
+        <span v-else-if="field.value">{{ field.value }}</span>
         <span v-else>&mdash;</span>
     </span>
 </template>
@@ -25,8 +23,8 @@ export default {
 
     computed: {
         showLink() {
-            return this.field.value && !this.field.fallback && this.field.showLinkToResourceFromIndex
-        },
-    },
+            return this.field.value && !this.field.fallback && this.field.showLinkToResourceFromIndex;
+        }
+    }
 };
 </script>
