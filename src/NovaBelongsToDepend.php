@@ -153,6 +153,21 @@ class NovaBelongsToDepend extends BelongsTo
     }
 
     /**
+     * Hydrate the given attribute on the model based on the incoming request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  object  $model
+     * @return mixed
+     */
+    public function fillForAction(NovaRequest $request, $model)
+    {
+        if (isset($request[$this->attribute])) {
+            $model->{$this->attribute} = $request[$this->attribute];
+        }
+        return $model->{$this->attribute};
+    }
+
+    /**
      * Fills the attributes of the model within the container if the dependencies for the container are satisfied.
      *
      * @param NovaRequest $request
