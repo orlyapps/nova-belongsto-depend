@@ -23,12 +23,7 @@ class FieldController extends Controller
         }
 
         // Create Nested Array Fields from Panels, Flatten and find
-        $fields = collect($resource->fields($request))->map(function ($field) {
-            if ($field instanceof MergeValue || $field instanceof Panel || \get_class($field) === 'Arsenaltech\NovaTab\NovaTab') {
-                return collect($field->data);
-            }
-            return $field;
-        })->flatten();
+        $fields = $this->returnFields($resource->fields($request));
 
         $fields = $fields->filter(function ($value) use ($request) {
             return ($value instanceof NovaBelongsToDepend);
@@ -51,5 +46,16 @@ class FieldController extends Controller
         $result = ($field->optionResolveCallback)($model);
 
         return $result;
+    }
+    
+    public function returnFields($fields) {
+        return collect($fields)->map(function ($field) {
+            if (isset($field->data)) {
+                return $this->returnFields($field->data);
+            } elseif (isset($field->meta['fields'])) {
+                return $this->returnFields($field->meta['fields']);
+            }
+            return $field;
+        })->flatten();
     }
 }
