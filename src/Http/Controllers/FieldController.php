@@ -13,7 +13,7 @@ class FieldController extends Controller
     public function index(NovaRequest $request)
     {
         if (is_null($request->dependKey)) {
-            abort(500, 'depend On Relationship not found on the Resource spefified for the Field "' . $request->attribute . '" Please check you have set correct /App/Nova/Resource');
+            abort(500, 'Depend On Relationship not found on the Resource specified for the Field "' . $request->attribute . '" Please check you have set correct /App/Nova/Resource');
         }
 
         if (method_exists($request->resourceClass, 'newModel')) {
