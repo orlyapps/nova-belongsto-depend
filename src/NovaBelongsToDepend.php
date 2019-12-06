@@ -3,6 +3,7 @@
 namespace Orlyapps\NovaBelongsToDepend;
 
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 use Laravel\Nova\Fields\ResourceRelationshipGuesser;
@@ -104,6 +105,16 @@ class NovaBelongsToDepend extends BelongsTo
 
     public function resolve($resource, $attribute = null)
     {
+        $testInstance = new \ReflectionClass($resource);
+        if ($testInstance->isAnonymous()) {
+            return $this;
+        }
+
+        if ($resource instanceof Action) {
+            $this->resourceParentClass = get_class($resource);
+            return $this;
+        }
+
         parent::resolve($resource, $attribute);
         $this->resourceParentClass = get_class(Nova::newResourceFromModel($resource));
 
@@ -139,6 +150,21 @@ class NovaBelongsToDepend extends BelongsTo
         }
 
         $this->fallback = false;
+    }
+
+    /**
+     * Hydrate the given attribute on the model based on the incoming request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  object  $model
+     * @return mixed
+     */
+    public function fillForAction(NovaRequest $request, $model)
+    {
+        if (isset($request[$this->attribute])) {
+            $model->{$this->attribute} = $request[$this->attribute];
+        }
+        return $model->{$this->attribute};
     }
 
     /**

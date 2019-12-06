@@ -2,21 +2,25 @@
 
 namespace Orlyapps\NovaBelongsToDepend\Http\Controllers;
 
+use \Illuminate\Http\Resources\MergeValue;
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Orlyapps\NovaBelongsToDepend\NovaBelongsToDepend;
-use \Illuminate\Http\Resources\MergeValue;
 
 class FieldController extends Controller
 {
     public function index(NovaRequest $request)
     {
         if (is_null($request->dependKey)) {
-            abort(500, 'depend On Relationship not found on the Resource spefified for the Field "' . $request->attribute . '" Please check you have set correct /App/Nova/Resource');
+            abort(500, 'Depend On Relationship not found on the Resource specified for the Field "' . $request->attribute . '" Please check you have set correct /App/Nova/Resource');
         }
 
-        $resource = new $request->resourceClass($request->resourceClass::newModel());
+        if (method_exists($request->resourceClass, 'newModel')) {
+            $resource = new $request->resourceClass($request->resourceClass::newModel());
+        } else {
+            $resource = new $request->resourceClass;
+        }
 
         // Create Nested Array Fields from Panels, Flatten and find
         $fields = $this->returnFields($resource->fields($request));

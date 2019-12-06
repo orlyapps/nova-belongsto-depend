@@ -8,9 +8,7 @@
                     resourceId: field.belongsToId
                 }}"
                 class="no-underline font-bold dim text-primary"
-            >
-                {{ field.value }}
-            </router-link>
+            >{{ field.value }}</router-link>
             <p v-else-if="field.value">{{ field.value }}</p>
             <p v-else>&mdash;</p>
         </template>
@@ -23,8 +21,8 @@ export default {
 
     computed: {
         showLink() {
-            return this.field.value && !this.field.fallback && this.field.showLinkToResourceFromDetail
-        },
-    },
+            return this.field.value && !this.field.fallback && this.field.showLinkToResourceFromDetail;
+        }
+    }
 };
 </script>
