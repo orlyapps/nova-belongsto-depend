@@ -54,7 +54,10 @@ class FieldController extends Controller
                 return $this->returnFields($field->data);
             } elseif (isset($field->meta['fields'])) {
                 return $this->returnFields($field->meta['fields']);
+            } elseif (isset($field->fields)) {
+                return $this->returnFields($field->fields);
             }
+            
             return $field;
         })->flatten();
     }
