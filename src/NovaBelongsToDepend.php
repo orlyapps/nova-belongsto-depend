@@ -186,6 +186,17 @@ class NovaBelongsToDepend extends BelongsTo
         }
     }
 
+    /**
+     * Return the sortable uri key for the field.
+     *
+     * @return string
+     */
+    public function sortableUriKey()
+    {
+        $request = app(NovaRequest::class);
+        return $this->getRelationForeignKeyName($request->newResource()->resource->{$this->attribute}());
+    }
+
     public function meta()
     {
         $this->meta = parent::meta();

@@ -78,12 +78,14 @@ export default {
                 });
 
                 if (dependsOnValue && dependsOnValue.value) {
-                    this.options = (await Nova.request().post("/nova-vendor/nova-belongsto-depend", {
-                        resourceClass: this.field.resourceParentClass,
-                        modelClass: dependsOnValue.field.modelClass,
-                        attribute: this.field.attribute,
-                        dependKey: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey]
-                    })).data;
+                    this.options = (
+                        await Nova.request().post("/nova-vendor/nova-belongsto-depend", {
+                            resourceClass: this.field.resourceParentClass,
+                            modelClass: dependsOnValue.field.modelClass,
+                            attribute: this.field.attribute,
+                            dependKey: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey]
+                        })
+                    ).data;
 
                     if (this.field.valueKey) {
                         this.value = this.options.find(item => item[this.field.modelPrimaryKey] == this.field.valueKey);
@@ -128,8 +130,12 @@ export default {
         fill(formData) {
             if (this.value) {
                 formData.append(this.field.attribute, this.value[this.field.modelPrimaryKey] || "");
-            } else if (this.field.fallback) {
-                formData.append(this.field.fallback.attribute, this.$refs["field-" + this.field.fallback.attribute].value);
+            } else {
+                if (this.field.fallback) {
+                    formData.append(this.field.fallback.attribute, this.$refs["field-" + this.field.fallback.attribute].value);
+                } else {
+                    formData.append(this.field.attribute, "");
+                }
             }
         },
 
