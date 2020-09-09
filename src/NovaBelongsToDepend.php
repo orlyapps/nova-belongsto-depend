@@ -55,7 +55,7 @@ class NovaBelongsToDepend extends BelongsTo
         };
     }
 
-    public function placeholder(string $placeholder)
+    public function placeholder($placeholder)
     {
         $this->withMeta(['placeholder' => $placeholder]);
         return $this;
