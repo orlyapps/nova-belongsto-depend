@@ -1,37 +1,40 @@
 <template>
   <default-field :field="field" v-if="showSelect">
     <template slot="field">
-      <multiselect
-        v-model="value"
-        :disabled="creatingViaRelatedResource"
-        :options="options"
-        :placeholder="
-          this.field.placeholder
-            ? this.field.placeholder
-            : this.field.indexName + ' ' + __('Select')
-        "
-        :selectLabel="__('Press enter to select')"
-        :selectedLabel="__('Selected')"
-        :deselectLabel="__('Press enter to remove')"
-        :custom-label="customLabel"
-        :open-direction="
-          this.field.openDirection ? this.field.openDirection : ''
-        "
-        @input="onChange"
-      >
-        <span slot="noResult">{{
-          __("Oops! No elements found. Consider changing the search query.")
-        }}</span>
+      <div class="flex items-center">
+        <multiselect
+          v-model="value"
+          :disabled="creatingViaRelatedResource"
+          :options="options"
+          :placeholder="
+            this.field.placeholder
+              ? this.field.placeholder
+              : this.field.indexName + ' ' + __('Select')
+          "
+          :selectLabel="__('Press enter to select')"
+          :selectedLabel="__('Selected')"
+          :deselectLabel="__('Press enter to remove')"
+          :custom-label="customLabel"
+          :open-direction="
+            this.field.openDirection ? this.field.openDirection : ''
+          "
+          @input="onChange"
+        >
+          <span slot="noResult">{{
+            __("Oops! No elements found. Consider changing the search query.")
+          }}</span>
 
-        <span slot="noOptions">{{ __("List is empty") }}</span>
-      </multiselect>
+          <span slot="noOptions">{{ __("List is empty") }}</span>
+        </multiselect>
 
-      <create-relation-button
-        v-if="canShowNewRelationModal"
-        @click="openRelationModal"
-        class="ml-1"
-        :dusk="`${this.field.attribute}-inline-create`"
-      />
+        <create-relation-button
+          v-if="canShowNewRelationModal"
+          @click="openRelationModal"
+          class="ml-1"
+          :dusk="`${this.field.attribute}-inline-create`"
+        />
+      </div>
+
       <portal to="modals" transition="fade-transition">
         <create-relation-modal
           v-if="relationModalOpen && canShowNewRelationModal"
@@ -99,6 +102,32 @@ export default {
 
     showFallback() {
       return this.field.fallback && this.options.length === 0;
+    },
+
+    isLocked() {
+      return this.viaResource == this.field.resourceName && this.field.reverse;
+    },
+
+    isReadonly() {
+      return (
+        this.field.readonly || _.get(this.field, 'extraAttributes.readonly')
+      )
+    },
+
+    canShowNewRelationModal() {
+      return (
+        this.field.showCreateRelationButton &&
+        !this.shownViaNewRelationModal &&
+        !this.isLocked &&
+        !this.isReadonly &&
+        this.authorizedToCreate
+      );
+    },
+
+    authorizedToCreate() {
+      return _.find(Nova.config.resources, (resource) => {
+        return resource.uriKey == this.field.resourceName;
+      }).authorizedToCreate;
     },
   },
 
@@ -215,26 +244,6 @@ export default {
           field: this.field,
         }
       );
-    },
-
-    isLocked() {
-      return this.viaResource == this.field.resourceName && this.field.reverse;
-    },
-
-    canShowNewRelationModal() {
-      return (
-        this.field.showCreateRelationButton &&
-        !this.shownViaNewRelationModal &&
-        !this.isLocked &&
-        !this.isReadonly &&
-        this.authorizedToCreate
-      );
-    },
-
-    authorizedToCreate() {
-      return _.find(Nova.config.resources, (resource) => {
-        return resource.uriKey == this.field.resourceName;
-      }).authorizedToCreate;
     },
 
     openRelationModal() {
