@@ -106,6 +106,7 @@ export default {
             }).authorizedToCreate;
         },
     },
+
     beforeDestroy() {
       if (this.field.dependsOn) {
 
@@ -118,6 +119,7 @@ export default {
         Nova.$off($busEvents);
       }
     },
+
     created() {
         if (this.field.dependsOn) {
 
@@ -136,14 +138,14 @@ export default {
                 });
 
                 if (dependsOnValue && dependsOnValue.value) {
-                    this.updateDependMap(dependsOnValue);
+                    this.updateDependsMap(dependsOnValue);
 
                     this.options = (
                         await Nova.request().post("/nova-vendor/nova-belongsto-depend", {
                             resourceClass: this.field.resourceParentClass,
                             modelClass: dependsOnValue.field.modelClass,
                             attribute: this.field.attribute,
-                            dependKeys: this.field.dependsMap
+                            dependsMap: this.field.dependsMap
                         })
                     ).data;
 
@@ -155,14 +157,14 @@ export default {
                         });
                     }
                 } else {
-                    this.cleanupDependMap(dependsOnValue);
+                    this.cleanupDependsMap(dependsOnValue);
                 }
             });
         }
     },
 
     methods: {
-        updateDependMap(dependsOnValue) {
+        updateDependsMap(dependsOnValue) {
             let exists = false;
             let index = -1;
 
@@ -185,7 +187,7 @@ export default {
             }
         },
 
-        cleanupDependMap(dependsOnValue) {
+        cleanupDependsMap(dependsOnValue) {
             for (let i = 0; i < this.field.dependsMap.length; i++) {
                 if (this.field.dependsMap[i].key === dependsOnValue.field.modelClass) {
                     this.field.dependsMap.splice(i, 1);

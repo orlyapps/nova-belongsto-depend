@@ -13,7 +13,7 @@ class FieldController extends Controller
 {
     public function index(NovaRequest $request)
     {
-        if (is_null($request->dependKeys)) {
+        if (is_null($request->dependsMap)) {
             abort(500, 'Depend On Relationship not found on the Resource specified for the Field "' . $request->attribute . '" Please check you have set correct /App/Nova/Resource');
         }
 
@@ -78,7 +78,7 @@ class FieldController extends Controller
     {
         $models = [];
 
-        foreach ($request->dependKeys as $value) {
+        foreach ($request->dependsMap as $value) {
 
             if (is_null($request->modelClass::find($value['value']))) {
                 abort(500, 'Can not find the Model "' . $request->modelClass . '::find(' . $value['value'] . ')');
