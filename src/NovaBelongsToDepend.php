@@ -24,8 +24,10 @@ class NovaBelongsToDepend extends BelongsTo
 
     public $titleKey;
 
-    public $dependKey;
-    public $dependsOn;
+    public $dependKey = [];
+    public $dependsOn = [];
+
+    public $dependsMap = [];
 
     public $optionResolveCallback = null;
     public $options = [];
@@ -79,9 +81,12 @@ class NovaBelongsToDepend extends BelongsTo
         return $this;
     }
 
-    public function dependsOn($relationship)
+    public function dependsOn(string ...$classNames): NovaBelongsToDepend
     {
-        $this->dependsOn = Str::lower($relationship);
+        foreach ($classNames as &$value) {
+            $value = Str::lower($value);
+        }
+        $this->dependsOn = $classNames;
         return $this;
     }
 
@@ -132,7 +137,9 @@ class NovaBelongsToDepend extends BelongsTo
         $this->foreignKeyName = $foreign->getForeignKeyName();
 
         if ($this->dependsOn) {
-            $this->dependKey = $resource->{$this->dependsOn}()->getForeignKeyName();
+            foreach ($this->dependsOn as $value) {
+                array_push($this->dependKey, $resource->{$value}()->getForeignKeyName());
+            }
         }
 
         $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
@@ -214,6 +221,7 @@ class NovaBelongsToDepend extends BelongsTo
             'options' => $this->options,
             'valueKey' => $this->valueKey,
             'dependKey' => $this->dependKey,
+            'dependsMap' => $this->dependsMap,
             'dependsOn' => $this->dependsOn,
             'titleKey' => $this->titleKey,
             'resourceParentClass' => $this->resourceParentClass,
@@ -222,7 +230,7 @@ class NovaBelongsToDepend extends BelongsTo
             'foreignKeyName' => $this->foreignKeyName,
             'fallback' => $this->fallback,
             'showLinkToResourceFromDetail' => $this->showLinkToResourceFromDetail,
-            'showLinkToResourceFromIndex' => $this->showLinkToResourceFromIndex
+            'showLinkToResourceFromIndex' => $this->showLinkToResourceFromIndex,
         ], $this->meta);
     }
 }

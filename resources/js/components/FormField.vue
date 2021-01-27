@@ -107,10 +107,26 @@ export default {
         },
     },
     beforeDestroy() {
-        Nova.$off("nova-belongsto-depend-" + this.field.dependsOn);
+      if (this.field.dependsOn) {
+
+        let $busEvents = [];
+
+        for (let i = 0; i < this.field.dependsOn.length; i++) {
+          $busEvents.push("depend-field-" + this.field.dependsOn[i]);
+        }
+
+        Nova.$off($busEvents);
+      }
     },
     created() {
         if (this.field.dependsOn) {
+
+            let $busEvents = [];
+
+            for (let i = 0; i < this.field.dependsOn.length; i++) {
+                $busEvents.push("depend-field-" + this.field.dependsOn[i]);
+            }
+
             Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, async (dependsOnValue) => {
                 this.value = "";
 
@@ -120,12 +136,14 @@ export default {
                 });
 
                 if (dependsOnValue && dependsOnValue.value) {
+                    this.updateDependMap(dependsOnValue);
+
                     this.options = (
                         await Nova.request().post("/nova-vendor/nova-belongsto-depend", {
                             resourceClass: this.field.resourceParentClass,
                             modelClass: dependsOnValue.field.modelClass,
                             attribute: this.field.attribute,
-                            dependKey: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey],
+                            dependKeys: this.field.dependsMap
                         })
                     ).data;
 
@@ -136,12 +154,45 @@ export default {
                             field: this.field,
                         });
                     }
+                } else {
+                    this.cleanupDependMap(dependsOnValue);
                 }
             });
         }
     },
 
     methods: {
+        updateDependMap(dependsOnValue) {
+            let exists = false;
+            let index = -1;
+
+            for (let i = 0; i < this.field.dependsMap.length; i++) {
+                if (this.field.dependsMap[i].key === dependsOnValue.field.modelClass) {
+
+                    exists = true;
+                    index = i;
+                    break;
+                }
+            }
+
+            if (exists) {
+                this.field.dependsMap[index].value = dependsOnValue.value[dependsOnValue.field.modelPrimaryKey];
+            } else {
+                this.field.dependsMap.push({
+                    key: dependsOnValue.field.modelClass,
+                    value: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey]
+                });
+            }
+        },
+
+        cleanupDependMap(dependsOnValue) {
+            for (let i = 0; i < this.field.dependsMap.length; i++) {
+                if (this.field.dependsMap[i].key === dependsOnValue.field.modelClass) {
+                    this.field.dependsMap.splice(i, 1);
+                }
+            }
+        },
+
         customLabel(item) {
             return item[this.field.titleKey];
         },
