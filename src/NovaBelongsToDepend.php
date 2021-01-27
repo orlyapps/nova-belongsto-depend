@@ -24,7 +24,6 @@ class NovaBelongsToDepend extends BelongsTo
 
     public $titleKey;
 
-    public $dependKey = [];
     public $dependsOn = [];
 
     public $dependsMap = [];
@@ -136,12 +135,6 @@ class NovaBelongsToDepend extends BelongsTo
         $foreign = $resource->{$this->attribute}();
         $this->foreignKeyName = $foreign->getForeignKeyName();
 
-        if ($this->dependsOn) {
-            foreach ($this->dependsOn as $value) {
-                array_push($this->dependKey, $resource->{$value}()->getForeignKeyName());
-            }
-        }
-
         $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
         if ($value) {
             $this->valueKey = $value->getKey();
@@ -220,7 +213,6 @@ class NovaBelongsToDepend extends BelongsTo
         return array_merge([
             'options' => $this->options,
             'valueKey' => $this->valueKey,
-            'dependKey' => $this->dependKey,
             'dependsMap' => $this->dependsMap,
             'dependsOn' => $this->dependsOn,
             'titleKey' => $this->titleKey,
