@@ -79,6 +79,17 @@ The following strings are translatable (add then in your language file located i
 -   'Selected'
 -   'Press enter to remove'
 
+If you do use nova-translatable and would like to return the translated name add this to your translatable model: 
+```php
+    /**
+     * @return mixed
+     */
+    public function getNameAttribute()
+    {
+        return $this->getTranslations('name')[app()->getLocale()];
+    }
+```
+
 ## Sample
 
 [Demo Project](https://github.com/orlyapps/laravel-nova-demo)
