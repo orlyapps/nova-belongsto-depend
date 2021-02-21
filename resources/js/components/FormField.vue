@@ -113,7 +113,7 @@ export default {
         let $busEvents = [];
 
         for (let i = 0; i < this.field.dependsOn.length; i++) {
-          $busEvents.push("depend-field-" + this.field.dependsOn[i]);
+          $busEvents.push("nova-belongsto-depend-" + this.field.dependsOn[i]);
         }
 
         Nova.$off($busEvents);
@@ -126,10 +126,10 @@ export default {
             let $busEvents = [];
 
             for (let i = 0; i < this.field.dependsOn.length; i++) {
-                $busEvents.push("depend-field-" + this.field.dependsOn[i]);
+                $busEvents.push("nova-belongsto-depend-" + this.field.dependsOn[i]);
             }
 
-            Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, async (dependsOnValue) => {
+            Nova.$on($busEvents, async (dependsOnValue) => {
                 this.value = "";
 
                 Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
