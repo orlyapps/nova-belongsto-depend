@@ -90,6 +90,43 @@ If you do use nova-translatable and would like to return the translated name add
     }
 ```
 
+## Performance Tips
+
+When attaching this field to a resource, you may include the field relation in the `$with` property for that resource to prevent n+1 issues when loading an index page for that resource.
+```php
+class Company extends Resource
+{
+  public static $with = [];
+}
+
+class Department extends Resource
+{
+  public static $with = ['company'];
+}
+
+class Location extends Resource
+{
+  public static $with = ['department', 'company'];
+}
+```
+
+You may also choose to cache your top-level model to reduce the number of queries made to the database for each row in an index.
+```php
+NovaBelongsToDepend::make('Company')
+    ->options(Cache::remember(
+        'companies', 
+        60, 
+        function () { 
+            return Company::all(); 
+        }
+    )),
+NovaBelongsToDepend::make('Department')
+    ->dependsOn('Company')
+    ->optionsResolve(function($company) { 
+        return $company->departments;
+    })
+```
+
 ## Sample
 
 [Demo Project](https://github.com/orlyapps/laravel-nova-demo)
