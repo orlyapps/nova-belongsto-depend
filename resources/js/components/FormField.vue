@@ -77,7 +77,7 @@ export default {
 
         /** Determine if we are creating a new resource via a parent relation */
         creatingViaRelatedResource() {
-            return this.viaResource == this.field.resourceName && typeof this.viaResourceId !== "undefined";
+            return this.viaResource == this.field.resourceName && typeof this.viaResourceId !== "undefined"  && this.field.reverse;
         },
 
         showSelect() {
