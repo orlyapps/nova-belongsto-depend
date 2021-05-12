@@ -106,12 +106,30 @@ export default {
             }).authorizedToCreate;
         },
     },
+
     beforeDestroy() {
-        Nova.$off("nova-belongsto-depend-" + this.field.dependsOn);
+      if (this.field.dependsOn) {
+
+        let $busEvents = [];
+
+        for (let i = 0; i < this.field.dependsOn.length; i++) {
+          $busEvents.push("nova-belongsto-depend-" + this.field.dependsOn[i]);
+        }
+
+        Nova.$off($busEvents);
+      }
     },
+
     created() {
         if (this.field.dependsOn) {
-            Nova.$on("nova-belongsto-depend-" + this.field.dependsOn, async (dependsOnValue) => {
+
+            let $busEvents = [];
+
+            for (let i = 0; i < this.field.dependsOn.length; i++) {
+                $busEvents.push("nova-belongsto-depend-" + this.field.dependsOn[i]);
+            }
+
+            Nova.$on($busEvents, async (dependsOnValue) => {
                 this.value = "";
 
                 Nova.$emit("nova-belongsto-depend-" + this.field.attribute.toLowerCase(), {
@@ -120,12 +138,14 @@ export default {
                 });
 
                 if (dependsOnValue && dependsOnValue.value) {
+                    this.updateDependsMap(dependsOnValue);
+
                     this.options = (
                         await Nova.request().post("/nova-vendor/nova-belongsto-depend", {
                             resourceClass: this.field.resourceParentClass,
                             modelClass: dependsOnValue.field.modelClass,
                             attribute: this.field.attribute,
-                            dependKey: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey],
+                            dependsMap: this.field.dependsMap
                         })
                     ).data;
 
@@ -136,12 +156,45 @@ export default {
                             field: this.field,
                         });
                     }
+                } else {
+                    this.cleanupDependsMap(dependsOnValue);
                 }
             });
         }
     },
 
     methods: {
+        updateDependsMap(dependsOnValue) {
+            let exists = false;
+            let index = -1;
+
+            for (let i = 0; i < this.field.dependsMap.length; i++) {
+                if (this.field.dependsMap[i].key === dependsOnValue.field.modelClass) {
+
+                    exists = true;
+                    index = i;
+                    break;
+                }
+            }
+
+            if (exists) {
+                this.field.dependsMap[index].value = dependsOnValue.value[dependsOnValue.field.modelPrimaryKey];
+            } else {
+                this.field.dependsMap.push({
+                    key: dependsOnValue.field.modelClass,
+                    value: dependsOnValue.value[dependsOnValue.field.modelPrimaryKey]
+                });
+            }
+        },
+
+        cleanupDependsMap(dependsOnValue) {
+            for (let i = 0; i < this.field.dependsMap.length; i++) {
+                if (this.field.dependsMap[i].key === dependsOnValue.field.modelClass) {
+                    this.field.dependsMap.splice(i, 1);
+                }
+            }
+        },
+
         customLabel(item) {
             return item[this.field.titleKey];
         },
