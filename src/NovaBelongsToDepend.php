@@ -135,15 +135,8 @@ class NovaBelongsToDepend extends BelongsTo
         $foreign = $resource->{$this->attribute}();
         $this->foreignKeyName = $foreign->getForeignKeyName();
 
-        if ($resource->relationLoaded($this->attribute)) {
-            $value = $resource->getRelation($this->attribute);
-        }
-
-        if (empty($value)) {
-            $value = $resource->{$this->attribute}()->withoutGlobalScopes()->getResults();
-        }
-
-        if (!empty($value)) {
+        $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
+        if ($value) {
             $this->valueKey = $value->getKey();
             $this->value = $this->formatDisplayValue($value);
         }
@@ -172,8 +165,8 @@ class NovaBelongsToDepend extends BelongsTo
     /**
      * Hydrate the given attribute on the model based on the incoming request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  object  $model
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param object $model
      * @return mixed
      */
     public function fillForAction(NovaRequest $request, $model)
