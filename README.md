@@ -129,8 +129,6 @@ NovaBelongsToDepend::make('Department')
 
 ## Sample
 
-[Demo Project](https://github.com/orlyapps/laravel-nova-demo)
-
 -   Warehouse hasMany Articles
 -   Articles belongsToMany Suppliers
 -   Suppliers belongsToMany Articles
@@ -210,7 +208,7 @@ public function fields(Request $request)
 }
 ```
 
-### Security
+## Security
 
 If you discover any security related issues, please email info@orlyapps.de instead of using the issue tracker.
 
