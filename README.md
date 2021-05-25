@@ -168,6 +168,10 @@ public function fields(Request $request)
 
 ## Depend on several fields
 
+
+https://user-images.githubusercontent.com/5220826/119490295-f6c9e700-bd5c-11eb-9431-92048e723201.mp4
+
+
 From **version 3** of this package you can depend on several fields.
 Just pass them comma separated in the dependsOn method.
 
