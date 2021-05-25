@@ -129,8 +129,6 @@ NovaBelongsToDepend::make('Department')
 
 ## Sample
 
-[Demo Project](https://github.com/orlyapps/laravel-nova-demo)
-
 -   Warehouse hasMany Articles
 -   Articles belongsToMany Suppliers
 -   Suppliers belongsToMany Articles
@@ -168,7 +166,49 @@ public function fields(Request $request)
 }
 ```
 
-### Security
+## Depend on several fields
+
+From **version 3** of this package you can depend on several fields.
+Just pass them comma separated in the dependsOn method.
+
+```php
+->dependsOn('classification', 'brand')
+```
+
+Here an example:
+
+-   Classification hasMany Models && belongsToMany Brands
+-   Brand hasMany Models && belongsToMany Classification
+-   Model belongsTo Classification && belongsTo Brand
+
+1. Select a **Classification** and get all _Brands_ of the classification
+2. Select a **Brand** and get all _Models_ that has this _Classification_ **and** _Brand_
+
+```php
+public function fields(Request $request)
+{
+    return [
+        ID::make(__('ID'), 'id')->sortable(),
+        NovaBelongsToDepend::make('Classification', 'classification')
+            ->options(\App\Models\Classification::all()),
+        NovaBelongsToDepend::make('Brand', 'brand')
+            ->optionsResolve(function ($classification) {
+                return $classification->brands()->get(['brands.id', 'brands.name']);
+            })
+            ->dependsOn('classification'),
+        NovaBelongsToDepend::make('Model', 'model', VehicleModel::class)
+            ->optionsResolve(function ($depends) {
+                return \App\Models\VehicleModel::query()
+                    ->where('classification_id', $depends->classification->id)
+                    ->where('brand_id', $depends->brand->id)
+                    ->get();
+            })
+            ->dependsOn('classification', 'brand'),
+    ];
+}
+```
+
+## Security
 
 If you discover any security related issues, please email info@orlyapps.de instead of using the issue tracker.
 
