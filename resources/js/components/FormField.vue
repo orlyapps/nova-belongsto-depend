@@ -2,8 +2,9 @@
     <default-field :field="field" v-if="showSelect">
         <template slot="field">
             <div class="flex items-center">
-                <multiselect
+                <multiselect 
                     v-model="value"
+                    v-bind:class="{ isError: hasError }"
                     :disabled="creatingViaRelatedResource"
                     :options="options"
                     :placeholder="this.field.placeholder ? this.field.placeholder : this.field.indexName + ' ' + __('Select')"
@@ -14,6 +15,7 @@
                     :open-direction="this.field.openDirection ? this.field.openDirection : ''"
                     @input="onChange"
                 >
+
                     <span slot="noResult">{{ __("Oops! No elements found. Consider changing the search query.") }}</span>
 
                     <span slot="noOptions">{{ __("List is empty") }}</span>
@@ -290,6 +292,10 @@ export default {
     border: 1px solid var(--60) !important;
     color: var(--80);
     border-radius: 0.5rem !important;
+}
+
+.isError{
+     border: 1px solid #e60909 !important;
 }
 
 .multiselect__select {
