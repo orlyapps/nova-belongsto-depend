@@ -80,11 +80,12 @@ class FieldController extends Controller
 
         foreach ($request->dependsMap as $value) {
 
-            if (is_null($request->modelClass::find($value['value']))) {
-                abort(500, 'Can not find the Model "' . $request->modelClass . '::find(' . $value['value'] . ')');
+            $modelClass = $value['key'] ?? $request->modalClass;
+            if (is_null($modelClass::find($value['value']))) {
+                abort(500, 'Can not find the Model "' . $modelClass . '::find(' . $value['value'] . ')');
             }
 
-            array_push($models, $request->modelClass::find($value['value']));
+            array_push($models, $modelClass::find($value['value']));
         }
 
         $modelMap = [];
