@@ -80,12 +80,19 @@ class NovaBelongsToDepend extends BelongsTo
         return $this;
     }
 
-    public function dependsOn(string ...$classNames): NovaBelongsToDepend
+    /**
+     * You may depend on other NovaBelongsToDepend fields only.
+     *
+     * @param string ...$attributeNames "name" value of the fields this field
+     *                                  depends on, or their "attribute" value
+     *                                  if it is different.
+     */
+    public function dependsOn(string ...$attributeNames): NovaBelongsToDepend
     {
-        foreach ($classNames as &$value) {
+        foreach ($attributeNames as &$value) {
             $value = Str::lower($value);
         }
-        $this->dependsOn = $classNames;
+        $this->dependsOn = $attributeNames;
         return $this;
     }
 
