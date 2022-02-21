@@ -135,7 +135,12 @@ class NovaBelongsToDepend extends BelongsTo
         $foreign = $resource->{$this->attribute}();
         $this->foreignKeyName = $foreign->getForeignKeyName();
 
-        $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
+        if ($resource->relationLoaded($this->attribute)) {
+            $value = $resource->getRelation($this->attribute);
+        } else {
+            $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
+        }
+        
         if ($value) {
             $this->valueKey = $value->getKey();
             $this->value = $this->formatDisplayValue($value);
