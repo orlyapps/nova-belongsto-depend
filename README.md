@@ -61,6 +61,9 @@ public function fields(Request $request)
 }
 ```
 
+Method `dependsOn` takes the `name` property of the fields it depends on.
+Use the field's `attribute` value if you specified it manually.
+
 ## Options
 
 ```placeholder('Optional Placeholder') ```
