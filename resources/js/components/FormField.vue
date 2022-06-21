@@ -59,6 +59,7 @@ export default {
         viaResource: {},
         viaResourceId: {},
         viaRelationship: {},
+        relationshipType: {},
     },
 
     data() {
@@ -150,7 +151,13 @@ export default {
 
                     this.options = (
                         await Nova.request().post("/nova-vendor/nova-belongsto-depend", {
-                            resourceClass: this.field.resourceParentClass,
+                            resource: this.resourceName,
+                            resourceId: this.resourceId,
+                            viaResource: this.viaResource,
+                            viaResourceId: this.viaResourceId,
+                            viaRelationship: this.viaRelationship,
+                            relationshipType: this.relationshipType,
+                            relatedResource: this.viaResource,
                             modelClass: dependsOnValue.field.modelClass,
                             attribute: this.field.attribute,
                             dependsMap: this.field.dependsMap

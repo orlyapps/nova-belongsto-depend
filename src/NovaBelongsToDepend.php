@@ -48,7 +48,7 @@ class NovaBelongsToDepend extends BelongsTo
         $resource = $resource ?? ResourceRelationshipGuesser::guessResource($name);
         parent::__construct($name, $attribute, $resource);
 
-        $this->modelClass = get_class($resource::newModel());
+        $this->modelClass = $resource::uriKey();
         $this->modelPrimaryKey = $resource::newModel()->getKeyName();
         $this->titleKey = $resource::$title;
         $this->optionResolveCallback = function () {
@@ -147,7 +147,7 @@ class NovaBelongsToDepend extends BelongsTo
         } else {
             $value = $resource->{$this->attribute}()->withoutGlobalScopes()->first();
         }
-        
+
         if ($value) {
             $this->valueKey = $value->getKey();
             $this->value = $this->formatDisplayValue($value);
