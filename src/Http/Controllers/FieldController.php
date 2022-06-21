@@ -25,9 +25,9 @@ class FieldController extends Controller
             abort(500, 'Could not find resource "' . $request->resource);
         }
 
-        $resourceModel = $resource->model()->find($request->resourceId);
-        if (is_null($resource)) {
-            abort(500, 'Could not find resource "' . $request->resource . '" with ' . $request->resourceId);
+        $resourceModel = null;
+        if (!empty($request->resourceId)) {
+            $resourceModel = $resource::newModel()->find($request->resourceId);
         }
 
         $attributedField = $this->getAttributedField($request, $resource);
@@ -121,7 +121,7 @@ class FieldController extends Controller
         return $modelMap;
     }
 
-    private function getOptions(NovaBelongsToDepend $attributedField, array $modelMap, Model $resourceModel)
+    private function getOptions(NovaBelongsToDepend $attributedField, array $modelMap, $resourceModel = null)
     {
         $options = null;
 
