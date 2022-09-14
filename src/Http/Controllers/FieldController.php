@@ -86,7 +86,7 @@ class FieldController extends Controller
         });
 
         if (is_null($attributedField)) {
-            abort(500, 'Can not find the Field "' . $request->attribute . '" in the Model "' . $resource::class . '"');
+            abort(500, 'Can not find the Field "' . $request->attribute . '" in the Model "' . get_class($resource) . '"');
         }
 
         return $attributedField;
