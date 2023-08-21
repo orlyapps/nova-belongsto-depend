@@ -1,5 +1,5 @@
 <template>
-    <default-field :field="field" v-if="showSelect">
+    <default-field :field="field" v-if="showSelect" :show-help-text="showHelpText">
         <template slot="field">
             <div class="flex items-center">
                 <multiselect
